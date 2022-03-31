@@ -866,6 +866,31 @@ while ~feof(fid);
                 data.([tstr '_sigma'])(niter,:) = temp(2);
                 data.([tstr '_equil'])(niter,:) = temp(3);
                 data.([tstr '_chisq'])(niter,:) = ((temp(1)-temp(3))./(temp(2))).^2;
+            case {'REGCOIL_CHI2_B', 'REGCOIL_LAMBDA', 'REGCOIL_MAX_K', 'REGCOIL_RMS_K', ...
+                    'REGCOIL_VOLUME_COIL', 'REGCOIL_BNORMAL_TOTAL', 'REGCOIL_max_Bnormal', ...
+                    'REGCOIL_COIL_PLASMA_DISTANCE_MIN'}
+                % This is defined differently than the others
+                data.([tstr '_target'])(niter,:) = temp(:,1);
+                data.([tstr '_sigma'])(niter,:) = temp(:,2);
+                data.([tstr '_equil'])(niter,:) = temp(:,4);  % Yes, 'temp(4)'
+                data.([tstr '_chisq'])(niter,:) = ...
+                    ( (temp(:,4) - temp(:,1)) ./ temp(:,2) ).^2;
+            case {'GAMMA_C'}
+                % This is defined differently than the others
+                data.([tstr '_target'])(niter,:) = temp(:,1);
+                data.([tstr '_sigma'])(niter,:) = temp(:,2);
+                data.([tstr '_equil'])(niter,:) = temp(:,3);  % Yes, 'temp(4)'
+                data.([tstr '_chisq'])(niter,:) = ...
+                    ( (temp(:,3) - temp(:,1)) ./ temp(:,2) ).^2;
+                data.([tstr '_s_index'])(niter,:) = temp(:,4);
+            case {'PTSM3D'}
+                data.([tstr '_target'])(niter,:) = temp(1);
+                data.([tstr '_sigma'])(niter,:) = temp(2);
+                data.([tstr '_equil'])(niter,:) = temp(3);
+                data.([tstr '_chisq'])(niter,:) = (temp(4)).^2;
+                temp=fgetl(fid)'; % Combined with the 'fgetl' below, this skips the PTSM3D_TARGET line
+                
+ 
             % BPROBES
             case{'B_PROBES'}
                 data.([tstr '_X'])(niter,:) = temp(:,1);
